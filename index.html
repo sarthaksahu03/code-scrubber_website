@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Code Scrubber — Stop leaking API keys</title>
+  <meta name="description" content="A VSCode extension that scans your workspace for leaked API keys and credentials, and fixes them in one click." />
+  <meta property="og:title" content="Code Scrubber" />
+  <meta property="og:description" content="Stop leaking API keys. Fix them in one click." />
+  <meta property="og:image" content="assets/img/og-image.png" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/nav.css" />
+  <link rel="stylesheet" href="assets/css/home.css" />
+  <link rel="stylesheet" href="assets/css/footer.css" />
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a class="nav-logo" href="index.html"><span class="logo-slash">// </span>code-scrubber</a>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a class="nav-link" href="index.html">home</a>
+          <a class="nav-link" href="docs.html">docs</a>
+          <a class="nav-link" href="blog.html">blog</a>
+          <a class="nav-link" href="https://github.com" target="_blank">github ↗</a>
+        </div>
+        <button class="theme-btn" id="theme-btn">
+          <span id="theme-icon">☀</span><span id="theme-label">light</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <div class="hero-layout">
+      <div>
+        <div class="hero-eyebrow">// vscode-extension</div>
+        <h1>Code<br>Scrubber</h1>
+        <div class="hero-sub">Stop leaking API keys.<br>Fix them in one click.</div>
+        <div class="hero-btns">
+          <a class="btn-dark" href="https://github.com/twilight0963/code-scrubber" target="_blank">Download on GitHub</a>
+          <a class="btn-outline" href="docs.html">Read the docs</a>
+        </div>
+      </div>
+      <div>
+        <div class="hero-info">
+          <div class="hero-stat-row">
+            <div class="hero-stat">
+              <span class="hero-stat-num">100%</span>
+              <span class="hero-stat-label">local — nothing leaves your machine</span>
+            </div>
+            <div class="hero-stat">
+              <span class="hero-stat-num">1-click</span>
+              <span class="hero-stat-label">fix to .env or AWS Secrets Manager</span>
+            </div>
+            <div class="hero-stat">
+              <span class="hero-stat-num">0</span>
+              <span class="hero-stat-label">marketplace account needed</span>
+            </div>
+          </div>
+          <div class="hero-detects">
+            <div class="hero-detects-label">// detects credentials from</div>
+            <div class="hero-tags">
+              <span class="hero-tag">AWS</span>
+              <span class="hero-tag">Stripe</span>
+              <span class="hero-tag">GitHub</span>
+              <span class="hero-tag">OpenAI</span>
+              <span class="hero-tag">Twilio</span>
+              <span class="hero-tag">Firebase</span>
+              <span class="hero-tag">SendGrid</span>
+              <span class="hero-tag">Slack</span>
+              <span class="hero-tag">Heroku</span>
+              <span class="hero-tag">Database URLs</span>
+              <span class="hero-tag">Google Cloud</span>
+              <span class="hero-tag">Azure</span>
+              <span class="hero-tag">Mailgun</span>
+              <span class="hero-tag">Shopify</span>
+              <span class="hero-tag">PayPal</span>
+              <span class="hero-tag">Anthropic</span>
+              <span class="hero-tag hero-tag-more">+ any high-entropy string</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-preview">
+      <div class="code-bar">
+        <span class="code-bar-name">api_client.js</span>
+        <span class="code-badge">⚠ 2 DETECTED</span>
+      </div>
+      <div class="code-body">
+        <span class="code-line"><span class="ln">1</span><span class="tok-k">const</span> <span class="tok-v">stripe</span> = require(<span class="tok-s">'stripe'</span>);</span>
+        <span class="code-line"><span class="ln">2</span>&nbsp;</span>
+        <span class="code-line"><span class="ln">3</span><span class="tok-k">const</span> <span class="tok-v">AWS_SECRET</span> = <span class="tok-flag">"AKIAJS72XEXAMPLE"</span> <span class="tok-c">// ⚠ SCRUBBER DETECTED</span></span>
+        <span class="code-line"><span class="ln">4</span><span class="tok-k">const</span> <span class="tok-v">DB_URL</span>&nbsp;&nbsp;&nbsp;&nbsp;= <span class="tok-flag">"postgres://admin:password@localhost:5432"</span> <span class="tok-c">// ⚠ SCRUBBER DETECTED</span></span>
+      </div>
+    </div>
+
+    <div class="page-section">
+      <div class="what-heading">What it does</div>
+      <div class="feat-grid">
+        <div class="feat-card">
+          <div class="feat-top"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <div class="feat-num">01. SCAN</div>
+          <p>Uses regex patterns and Shannon entropy to find high-randomness strings (like secret keys) in real-time.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-top"># status-bar</div>
+          <div class="feat-num">02. HIGHLIGHT</div>
+          <p>Integrates directly into the VSCode "Problems" tab. No extra UI bloat. Just red squiggles where they matter.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-top"># quick-fix</div>
+          <div class="feat-num">03. FIX</div>
+          <p>Refactor secrets to .env files or AWS Secrets Manager with a single click. Moves the data, updates the code.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="carousel-wrap">
+      <div class="carousel-label">screenshots</div>
+      <div class="carousel" id="carousel">
+        <div class="carousel-track" id="carousel-track">
+          <div class="carousel-slide">
+            <div class="slide-icon">⊞</div>
+            <div class="slide-title">PROBLEMS TAB VIEW</div>
+            <div class="slide-desc">Detected credentials surface directly in VSCode's Problems panel with file and line info.</div>
+            <div class="slide-res">replace with actual screenshot</div>
+          </div>
+          <div class="carousel-slide">
+            <div class="slide-icon">◈</div>
+            <div class="slide-title">QUICK FIX MENU</div>
+            <div class="slide-desc">One-click lightbulb action to move the credential to .env or push to AWS Secrets Manager.</div>
+            <div class="slide-res">replace with actual screenshot</div>
+          </div>
+          <div class="carousel-slide">
+            <div class="slide-icon">⊡</div>
+            <div class="slide-title">.ENV REFACTOR</div>
+            <div class="slide-desc">Before and after — the hard-coded value is extracted and the reference is rewritten automatically.</div>
+            <div class="slide-res">replace with actual screenshot</div>
+          </div>
+          <div class="carousel-slide">
+            <div class="slide-icon">⬡</div>
+            <div class="slide-title">GIT HISTORY SCAN</div>
+            <div class="slide-desc">Past commits scanned for leaked credentials with direct links to the offending line.</div>
+            <div class="slide-res">replace with actual screenshot</div>
+          </div>
+          <div class="carousel-slide">
+            <div class="slide-icon">▦</div>
+            <div class="slide-title">FULL WORKSPACE OVERVIEW</div>
+            <div class="slide-desc">All flagged credentials across every file in your project, summarised in one view.</div>
+            <div class="slide-res">replace with actual screenshot</div>
+          </div>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-btn" id="carousel-prev">←</button>
+          <button class="carousel-btn" id="carousel-next">→</button>
+        </div>
+      </div>
+      <div class="carousel-footer">
+        <div class="carousel-dots" id="carousel-dots"></div>
+        <div class="carousel-counter" id="carousel-counter">01 / 05</div>
+      </div>
+    </div>
+
+    <div class="page-section" style="padding-bottom: 80px;">
+      <div class="section-label">about</div>
+      <p class="about-text">Built after watching the same API key mistake happen in every group project. The fix is always the same — just tedious. So we automated it. Runs entirely locally inside VSCode. No cloud dependency, no AI black box.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <p>// built by humans, for humans</p>
+      <div class="f-links">
+        <a href="https://github.com" target="_blank">GitHub</a>
+        <a href="#">Donate</a>
+        <a href="docs.html">Docs</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/theme.js" defer></script>
+  <script src="assets/js/nav.js" defer></script>
+  <script src="assets/js/carousel.js" defer></script>
+</body>
+</html>

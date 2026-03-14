@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — Code Scrubber</title>
+  <meta name="description" content="Updates, security tips, and tutorials from the Code Scrubber team." />
+  <meta property="og:title" content="Code Scrubber Blog" />
+  <meta property="og:description" content="Updates, security tips, and tutorials from the Code Scrubber team." />
+  <meta property="og:image" content="assets/img/og-image.png" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/nav.css" />
+  <link rel="stylesheet" href="assets/css/blog.css" />
+  <link rel="stylesheet" href="assets/css/footer.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+    <a class="nav-logo" href="index.html"><span class="logo-slash">// </span>code-scrubber</a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a class="nav-link" href="index.html">home</a>
+        <a class="nav-link" href="docs.html">docs</a>
+        <a class="nav-link" href="blog.html">blog</a>
+        <a class="nav-link" href="https://github.com" target="_blank">github ↗</a>
+      </div>
+      <button class="theme-btn" id="theme-btn">
+        <span id="theme-icon">☀</span>
+        <span id="theme-label">light</span>
+      </button>
+    </div>
+      </div>
+  </nav>
+
+  <!-- POST LIST -->
+  <div id="post-list" class="post-list">
+    <div class="blog-wrap">
+      <h2>Blog</h2>
+      <div class="blog-sub">// updates, security tips, and tutorials</div>
+
+      <div class="post-card" data-post="1">
+        <div class="post-meta"><span class="post-tag">launch</span><span>March 2025</span><span>3 min read</span></div>
+        <h3>Introducing Code Scrubber — because fixing API leaks shouldn't be tedious</h3>
+        <p>After watching the same mistake happen in every group project, we built a tool that just handles it for you.</p>
+        <span class="post-cta">Read →</span>
+      </div>
+
+      <div class="post-card" data-post="2">
+        <div class="post-meta"><span class="post-tag">security</span><span>February 2025</span><span>4 min read</span></div>
+        <h3>Why AI-generated code leaks credentials — and what to do about it</h3>
+        <p>Vibe coding is fast. It's also quietly creating a credential leak epidemic.</p>
+        <span class="post-cta">Read →</span>
+      </div>
+
+      <div class="post-card" data-post="3">
+        <div class="post-meta"><span class="post-tag">tutorial</span><span>January 2025</span><span>5 min read</span></div>
+        <h3>The right way to handle API keys — a beginner's guide</h3>
+        <p>Environment variables, secret managers, git hooks. What they are, why they matter.</p>
+        <span class="post-cta">Read →</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- POST FULL VIEW (filled by blog.js) -->
+  <div id="post-full" class="post-full blog-wrap"></div>
+
+  <!-- POST CONTENT TEMPLATES (hidden) -->
+  <template id="post-content-1">
+    <button class="back-btn">← back to blog</button>
+    <div class="post-meta"><span class="post-tag">launch</span><span>March 2025</span></div>
+    <h2>Introducing Code Scrubber</h2>
+    <p>Every group project. Every time. Someone commits an API key. It's in the history. The key has to be revoked. It takes an hour. Everyone is annoyed. We've been there more times than we'd like to admit.</p>
+    <p>Code Scrubber is a VSCode extension that just handles it. It runs in the background, spots credentials the moment you type them, and offers a one-click fix. Move to <code style="font-family:var(--mono);font-size:12px;background:var(--ph);padding:2px 5px;border:1px solid var(--border)">.env</code>, done. No context switching, no manual editing, no forgetting.</p>
+    <h3>Why a VSCode extension?</h3>
+    <p>Because that's where the mistake happens. Not in a separate security tool, not in your CI pipeline — in the editor, while you're copying an API key from a browser tab and pasting it directly into your code. Catching it there, at that moment, is the only way it actually helps new developers build the habit.</p>
+    <h3>What's next</h3>
+    <p>The core scanner and refactor tool are working. We're adding Python refactor templates, encrypted .env sharing, and a compromised credentials checker. If something's broken, open an issue on GitHub. We'll fix it.</p>
+  </template>
+
+  <template id="post-content-2">
+    <button class="back-btn">← back to blog</button>
+    <div class="post-meta"><span class="post-tag">security</span><span>February 2025</span></div>
+    <h2>Why AI-generated code leaks credentials</h2>
+    <p>Vibe coding is fast. You describe what you want, the model generates the code, you paste it in, it works. What it doesn't do is remind you that the API key you included in your prompt just ended up hard-coded in the output.</p>
+    <p>This is a structural problem. LLMs generate plausible code. If your prompt contains a key — because you were showing context, because you copied from an existing file — it will appear in the output. The model isn't making a mistake. It's doing exactly what you asked.</p>
+    <h3>What regex still catches</h3>
+    <p>LLMs built into editors sometimes catch obvious patterns. But the check is often shallow, optional, and happens after the code is already written. A static extension running on every save catches it regardless of how the code was generated — by hand, by Copilot, by Cursor, by paste.</p>
+    <p>Entropy-based detection catches the cases regex misses: unknown token formats, internal service credentials, anything that looks random but doesn't match a known pattern.</p>
+  </template>
+
+  <template id="post-content-3">
+    <button class="back-btn">← back to blog</button>
+    <div class="post-meta"><span class="post-tag">tutorial</span><span>January 2025</span></div>
+    <h2>The right way to handle API keys</h2>
+    <p>If you just got an API key and you're about to paste it into your code — stop. Here's what to do instead, and why it matters.</p>
+    <h3>Step 1: Use a .env file</h3>
+    <p>Create a file called <code style="font-family:var(--mono);font-size:12px;background:var(--ph);padding:2px 5px;border:1px solid var(--border)">.env</code> at the root of your project. Put your key there. Then add <code style="font-family:var(--mono);font-size:12px;background:var(--ph);padding:2px 5px;border:1px solid var(--border)">.env</code> to your <code style="font-family:var(--mono);font-size:12px;background:var(--ph);padding:2px 5px;border:1px solid var(--border)">.gitignore</code>.</p>
+    <h3>Step 2: Never commit .env</h3>
+    <p>The whole point of a .env file is that it stays on your machine. It doesn't go to GitHub. Each person has their own copy with their own keys.</p>
+    <h3>Step 3: If it's already in your git history</h3>
+    <p>Revoke the key immediately — treat it as compromised. Then remove it from history using <code style="font-family:var(--mono);font-size:12px;background:var(--ph);padding:2px 5px;border:1px solid var(--border)">git filter-repo</code>. Deleting the file isn't enough; the key is still in older commits. Code Scrubber's git history scanner will find these for you.</p>
+  </template>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+    <p>// built by humans, for humans</p>
+    <div class="f-links">
+      <a href="https://github.com" target="_blank">GitHub</a>
+      <a href="#">Donate</a>
+      <a href="docs.html">Docs</a>
+    </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/theme.js" defer></script>
+  <script src="assets/js/nav.js" defer></script>
+  <script src="assets/js/blog.js" defer></script>
+</body>
+</html>

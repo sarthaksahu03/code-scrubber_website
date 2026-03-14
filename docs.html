@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Docs — Code Scrubber</title>
+  <meta name="description" content="Documentation for Code Scrubber VSCode extension. Installation, usage, configuration and FAQ." />
+  <meta property="og:title" content="Code Scrubber Docs" />
+  <meta property="og:description" content="Full documentation for the Code Scrubber VSCode extension." />
+  <meta property="og:image" content="assets/img/og-image.png" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/nav.css" />
+  <link rel="stylesheet" href="assets/css/docs.css" />
+  <link rel="stylesheet" href="assets/css/footer.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+    <a class="nav-logo" href="index.html"><span class="logo-slash">// </span>code-scrubber</a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a class="nav-link" href="index.html">home</a>
+        <a class="nav-link" href="docs.html">docs</a>
+        <a class="nav-link" href="blog.html">blog</a>
+        <a class="nav-link" href="https://github.com" target="_blank">github ↗</a>
+      </div>
+      <button class="theme-btn" id="theme-btn">
+        <span id="theme-icon">☀</span>
+        <span id="theme-label">light</span>
+      </button>
+    </div>
+      </div>
+  </nav>
+
+  <div class="docs-wrap">
+
+    <!-- SIDEBAR -->
+    <aside class="docs-sidebar">
+      <span class="ds-label">getting started</span>
+      <button class="ds-link" data-doc="install">Installation</button>
+      <button class="ds-link" data-doc="quickstart">Quick start</button>
+      <span class="ds-label">usage</span>
+      <button class="ds-link" data-doc="scan">Scanning</button>
+      <button class="ds-link" data-doc="fix">Refactoring</button>
+      <button class="ds-link" data-doc="aws">AWS Secrets Manager</button>
+      <span class="ds-label">reference</span>
+      <button class="ds-link" data-doc="config">Configuration</button>
+      <button class="ds-link" data-doc="faq">FAQ</button>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="doc-body">
+
+      <section class="doc-section" data-doc="install">
+        <h2>Installation</h2>
+        <p>Code Scrubber ships as a <code>.vsix</code> file — no marketplace account required.</p>
+        <h3>Step 1 — Download</h3>
+        <p>Grab the latest release from the <a href="https://github.com" target="_blank" style="color:var(--accent)">GitHub releases page</a>. The file will be named <code>code-scrubber-1.0.0.vsix</code>.</p>
+        <h3>Step 2 — Install in VSCode</h3>
+        <p>Open the command palette (<code>Ctrl+Shift+P</code> or <code>Cmd+Shift+P</code>) and run:</p>
+        <div class="code-doc">Extensions: Install from VSIX...</div>
+        <p>Navigate to the downloaded file and confirm. VSCode will prompt you to reload.</p>
+        <h3>Step 3 — Done</h3>
+        <p>The extension activates on every workspace. Detected credentials appear immediately in the Problems tab.</p>
+        <div class="callout"><strong>Note:</strong> The extension runs entirely locally. No data leaves your machine.</div>
+      </section>
+
+      <section class="doc-section" data-doc="quickstart">
+        <h2>Quick start</h2>
+        <p>Open any project and check the Problems tab at the bottom of VSCode. Detected credentials show up with filename and line number.</p>
+        <h3>Fix a credential</h3>
+        <p>Click the warning to jump to the line. Press <code>Ctrl+.</code> to see quick fixes:</p>
+        <ul>
+          <li>Move to .env file</li>
+          <li>Upload to AWS Secrets Manager</li>
+          <li>Dismiss (mark as intentional)</li>
+        </ul>
+        <div class="callout"><strong>Tip:</strong> Run <code>Code Scrubber: Scan Git History</code> to check past commits too.</div>
+      </section>
+
+      <section class="doc-section" data-doc="scan">
+        <h2>Scanning</h2>
+        <p>Two detection methods run in combination on every save.</p>
+        <h3>Regex matching</h3>
+        <p>Known credential formats — AWS keys, Stripe keys, GitHub tokens — matched against curated patterns.</p>
+        <h3>Shannon entropy</h3>
+        <p>Measures character randomness. Strings above the threshold get flagged as likely credentials.</p>
+        <div class="code-doc"># entropy threshold (default: 4.5 bits/char)
+"entropy.threshold": 4.5</div>
+        <h3>Git history scan</h3>
+        <p>Run <code>Code Scrubber: Scan Git History</code> from the command palette to check all past commits in your local repo.</p>
+      </section>
+
+      <section class="doc-section" data-doc="fix">
+        <h2>Refactoring</h2>
+        <p>The refactor action moves a detected credential into a <code>.env</code> file and rewrites the reference.</p>
+        <h3>Before</h3>
+        <div class="code-doc">const client = stripe('sk_live_4xKj9mNpQr7vWzXy');</div>
+        <h3>After</h3>
+        <div class="code-doc">const client = stripe(process.env.STRIPE_SECRET_KEY);</div>
+        <p>And in your <code>.env</code>:</p>
+        <div class="code-doc">STRIPE_SECRET_KEY=sk_live_4xKj9mNpQr7vWzXy</div>
+        <div class="callout"><strong>Remember:</strong> Add <code>.env</code> to your <code>.gitignore</code>. Code Scrubber will warn you if it's missing.</div>
+      </section>
+
+      <section class="doc-section" data-doc="aws">
+        <h2>AWS Secrets Manager</h2>
+        <p>If you have AWS credentials configured locally, Code Scrubber can push secrets directly to AWS and rewrite your code to fetch them at runtime.</p>
+        <h3>Requirements</h3>
+        <ul>
+          <li>AWS CLI installed and configured (<code>aws configure</code>)</li>
+          <li>IAM permissions: <code>secretsmanager:CreateSecret</code>, <code>secretsmanager:PutSecretValue</code></li>
+        </ul>
+        <div class="callout"><strong>Note:</strong> This feature is optional. You don't need an AWS account to use Code Scrubber.</div>
+      </section>
+
+      <section class="doc-section" data-doc="config">
+        <h2>Configuration</h2>
+        <p>All settings live in VSCode <code>settings.json</code> under the <code>codeScrubber</code> namespace.</p>
+        <div class="code-doc">{
+  "codeScrubber.entropy.threshold": 4.5,
+  "codeScrubber.scanOnSave": true,
+  "codeScrubber.ignorePaths": ["**/test/**", "**/*.md"],
+  "codeScrubber.gitHistory.enabled": false
+}</div>
+        <h3>Options</h3>
+        <ul>
+          <li><code>entropy.threshold</code> — float, 3.0–6.0. Lower = more sensitive.</li>
+          <li><code>scanOnSave</code> — re-scan the file on every save.</li>
+          <li><code>ignorePaths</code> — glob patterns to skip.</li>
+          <li><code>gitHistory.enabled</code> — auto-scan git history on workspace open.</li>
+        </ul>
+      </section>
+
+      <section class="doc-section" data-doc="faq">
+        <h2>FAQ</h2>
+        <h3>Does it send my code anywhere?</h3>
+        <p>No. Everything runs locally in the VSCode extension process. No telemetry, no cloud scanning.</p>
+        <h3>Why is it flagging something that isn't a key?</h3>
+        <p>Entropy detection has false positives. Long random-looking strings (hashes, UUIDs, base64 data) can trigger it. Dismiss individual warnings or raise the entropy threshold in settings.</p>
+        <h3>Does it work with languages other than JavaScript?</h3>
+        <p>Yes — it scans plain text and works with any language. The refactor-to-.env action currently generates JavaScript syntax; Python support is on the roadmap.</p>
+        <h3>Can I use it without Git?</h3>
+        <p>Yes. The workspace scanner works without a git repo. The git history feature simply won't be available.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+    <p>// built by humans, for humans</p>
+    <div class="f-links">
+      <a href="https://github.com" target="_blank">GitHub</a>
+      <a href="#">Donate</a>
+      <a href="docs.html">Docs</a>
+    </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/theme.js" defer></script>
+  <script src="assets/js/nav.js" defer></script>
+  <script src="assets/js/docs.js" defer></script>
+</body>
+</html>

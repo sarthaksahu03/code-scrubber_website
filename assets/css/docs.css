@@ -1,0 +1,94 @@
+/* ── DOCS LAYOUT ── */
+.docs-wrap {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  min-height: calc(100vh - 52px);
+}
+
+/* ── SIDEBAR ── */
+.docs-sidebar {
+  border-right: 1.5px solid var(--border2);
+  padding: 28px 0;
+  background: var(--bg);
+  transition: background 0.25s;
+  position: sticky;
+  top: 52px;
+  height: calc(100vh - 52px);
+  overflow-y: auto;
+}
+
+.ds-label {
+  font-size: 10px;
+  color: var(--ink3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0 20px;
+  margin-bottom: 4px;
+  margin-top: 20px;
+  display: block;
+}
+.ds-label:first-child { margin-top: 0; }
+
+.ds-link {
+  display: block;
+  font-size: 12px;
+  color: var(--ink);
+  padding: 6px 20px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-family: var(--mono);
+  width: 100%;
+  text-align: left;
+  letter-spacing: 0.03em;
+  border-left: 2px solid transparent;
+  transition: background 0.1s;
+}
+.ds-link:hover  { background: var(--ph); }
+.ds-link.active { border-left: 2px solid var(--ink); background: var(--ph); font-weight: 600; }
+
+/* ── DOC CONTENT ── */
+.doc-body {
+  padding: 40px 44px;
+  background: var(--bg);
+  transition: background 0.25s;
+  max-width: 720px;
+}
+
+.doc-body h2 {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.doc-body h3 {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  margin: 24px 0 8px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+}
+
+.doc-body p { font-size: 13px; color: var(--ink2); line-height: 1.75; margin-bottom: 12px; }
+
+.doc-body ul { padding-left: 18px; margin-bottom: 12px; }
+.doc-body li { font-size: 13px; color: var(--ink2); line-height: 1.7; margin-bottom: 4px; }
+
+.doc-body code {
+  font-family: var(--mono);
+  font-size: 11px;
+  background: var(--ph);
+  padding: 2px 6px;
+  color: var(--ink);
+  border: 1px solid var(--border);
+}
+
+/* Active section highlighting */
+.doc-section { display: none; }
+.doc-section.active { display: block; }
